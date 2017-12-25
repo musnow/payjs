@@ -33,6 +33,9 @@ class Payjs
         if(isset($config['notifyurl'])){
             $this->NotifyURL = $config['notifyurl'];
         }
+        if(isset($config['toobject'])){
+            $this->AutoToObject = $config['toobject'];
+        }
     }
 
     /*
@@ -127,10 +130,10 @@ class Payjs
      */
     protected function Curl($Url,$Arrry){
         if($this->AutoSign){
-            $Arrry['sign'] = $this->Sign($Arrry);
             if (!array_key_exists('payjs_order_id',$Arrry)){
                 $Arrry['notify_url'] = $this->NotifyURL;
             }
+            $Arrry['sign'] = $this->Sign($Arrry);
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $Url);
