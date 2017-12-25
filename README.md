@@ -31,7 +31,7 @@ $payjs = new Payjs([
 // $Amount         金额；单位（分）如果不填写默认为￥0.01
 // $Products       商品说明；如果不填写默认为“订单”
 // $JumpURL        前端跳转地址；收银台模式和jspay需要 根据文档说的目前未开启
-// $PayjsOrderID //jspay的订单id
+// $PayjsOrderID   jspay的订单id
 
 //扫码支付
 $retData = $payjs->QRPay($OrderID,$Amount,$Products);
@@ -51,7 +51,8 @@ print_r($retData);
 ```
 
 
-水平有限，如果哪里有错误请指出。
+水平有限，如果你发现哪里有错误请提交issues，感激不尽。
 
 #License  
+
 Medoo is under the MIT license.
