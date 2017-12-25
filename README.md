@@ -27,7 +27,9 @@ $payjs = new Payjs([
     //jspay商户密钥
     'merchantkey' => '',
     //异步通知的URL；必须为可直接访问的URL，不能带参数、session验证、csrf验证。留空则不通知
-    'notifyurl' => ''
+    'notifyurl' => '',
+    //是否将返回值转换为对象
+    'toobject' = true
 ]);
 
 //订单id
