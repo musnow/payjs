@@ -1,0 +1,19 @@
+{
+    "name": "musnow/payjs",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "musnow",
+            "email": "775130834@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Payjs\\": "/src"
+        }
+    }
+}
