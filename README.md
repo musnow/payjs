@@ -30,6 +30,17 @@ $payjs = new Payjs([
     'notifyurl' => ''
 ]);
 
+//订单id
+$OrderID = 'wixin_order' . time();
+//订单金额
+$Amoun = 100;
+//商品说明
+$Products = '测试订单';
+//前端跳转地址
+$JumpURL = '';
+//jspay的订单id
+$PayjsOrderID = '2017122519xxxxxxx26265498';
+
 //扫码支付
 $retData = $payjs->QRPay($OrderID,$Amount,$Products);
 print_r($retData);
