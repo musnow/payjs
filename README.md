@@ -1,24 +1,31 @@
 # payjs
 本项目是为payjs.cn适配的，可以为你的项目接入微信支付功能。
 
-PAYJS 旨在解决需要使用交易数据流的个人、创业者、个体户等小微支付需求，帮助开发者使想法快速转变为原型
-PAYJS 自身不做收单和清算，只做微信支付个人接口对接的技术服务。
+PAYJS 旨在解决需要使用交易数据流的个人、创业者、个体户等小微支付需求，帮助开发者使想法快速转变为原型   
+
+https://payjs.cn/
 
 
 如果你想使用本项目请使用 composer 安装
 
 ```$xslt
-composer require musnow/payjs
+$ composer require musnow/payjs
 ```
-
-更新
-
+或者在你的项目跟目录编辑```composer.json```
 ```$xslt
-composer update
+"require": {
+    "musnow/payjs": "^1.0.2"
+}
 ```
+更新
+```$xslt
+$ composer update
+```
+
 
 ```$xslt
 require 'vendor/autoload.php';
+
 use \Payjs\Payjs;
 
 $payjs = new Payjs([
@@ -26,9 +33,9 @@ $payjs = new Payjs([
     'merchantid' => '',
     //jspay商户密钥
     'merchantkey' => '',
-    //异步通知的URL；必须为可直接访问的URL，不能带参数、session验证、csrf验证。留空则不通知
+    //异步通知的URL；必须为可直接访问的URL，不能带参数、session验证、csrf验证；留空则不通知
     'notifyurl' => '',
-    //是否将返回值转换为对象，如需使用收银台模式请勿开启
+    //将返回值转换为对象，如需使用收银台模式请勿开启；不填默认开启
     'toobject' = false
 ]);
 
@@ -72,6 +79,6 @@ print_r($retData);
 
 水平有限，如果你发现哪里有错误请提交issues，感激不尽。
 
-#License  
 
-Medoo is under the MIT license.
+#License  
+payjs is under the MIT license.
