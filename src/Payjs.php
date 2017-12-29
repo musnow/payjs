@@ -12,9 +12,9 @@ class Payjs
 {
     private $MerchantID;
     private $MerchantKey;
-    private $NotifyURL;
+    private $NotifyURL = null;
     private $AutoSign = true;
-    private $AutoToObject = true;
+    private $ToObject = true;
 
     /**
      * Payjs constructor.
@@ -34,7 +34,7 @@ class Payjs
             $this->NotifyURL = $config['notifyurl'];
         }
         if(isset($config['toobject'])){
-            $this->AutoToObject = $config['toobject'];
+            $this->ToObject = $config['toobject'];
         }
     }
 
@@ -46,14 +46,12 @@ class Payjs
             $OrderID = self::SetOrderID();
         }
         $RetURL = 'https://payjs.cn/api/native';
-        $Data = [
-            'mchid' => $this->MerchantID,
+
+        return $this->Submit($RetURL,[
             'total_fee' => $Amount,
             'body' => $Products,
             'out_trade_no' => $OrderID
-        ];
-
-        return $this->Curl($RetURL,$Data);
+        ]);
     }
 
     /*
@@ -64,15 +62,13 @@ class Payjs
             $OrderID = self::SetOrderID();
         }
         $RetURL = 'https://payjs.cn/api/cashier';
-        $Data = [
-            'mchid' => $this->MerchantID,
+
+        return $this->Submit($RetURL,[
             'total_fee' => $Amount,
             'body' => $Products,
             'out_trade_no' => $OrderID,
             'callback_url' => $JumpURL
-        ];
-
-        return $this->Curl($RetURL,$Data);
+        ]);
     }
 
     /*
@@ -84,15 +80,13 @@ class Payjs
             $OrderID = self::SetOrderID();
         }
         $RetURL = 'https://payjs.cn/api/jspay';
-        $Data = [
-            'mchid' => $this->MerchantID,
+
+        return $this->Submit($RetURL,[
             'total_fee' => $Amount,
             'body' => $Products,
             'out_trade_no' => $OrderID,
             'callback_url' => $JumpURL
-        ];
-
-        return $this->Curl($RetURL,$Data);
+        ]);
     }
 
     /*
@@ -100,12 +94,13 @@ class Payjs
      */
     public function Query($OrderID = null){
         if (is_null($OrderID)){
-            return '必须填入payjs订单id';
+            return '必须指定payjs订单id';
         }
         $RetURL = 'https://payjs.cn/api/check';
-        $Data['payjs_order_id'] = $OrderID;
 
-        return $this->Curl($RetURL,$Data);
+        return $this->Submit($RetURL,[
+            'payjs_order_id' => $OrderID
+        ]);
     }
 
     /*
@@ -119,24 +114,31 @@ class Payjs
     /*
      * 签名
      */
-    protected function Sign(array $data) {
-        ksort($data);
-        $sign = strtoupper(md5(urldecode(http_build_query($data)).'&key='.$this->MerchantKey));
-        return $sign;
+    protected function Sign(array $Data) {
+        ksort($Data);
+        return strtoupper(md5(urldecode(http_build_query($Data)).'&key='.$this->MerchantKey));
     }
 
     /*
-     * curl
+     * 预处理数据
      */
-    protected function Curl($Url,$Arrry){
+    protected function Submit($Url,$Arrry){
         if($this->AutoSign){
-            if (!array_key_exists('payjs_order_id',$Arrry)){
+            if(!array_key_exists('payjs_order_id',$Arrry)){
+                $Arrry['mchid'] = $this->MerchantID;
                 if (!empty($this->NotifyURL)){
                     $Arrry['notify_url'] = $this->NotifyURL;
                 }
             }
             $Arrry['sign'] = $this->Sign($Arrry);
         }
+        return $this->Curl($Url,$Arrry);
+    }
+
+    /*
+     * curl
+    */
+    protected function Curl($Url,$Arrry){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $Url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -147,13 +149,13 @@ class Payjs
         $cexecute = curl_exec($ch);
         curl_close($ch);
 
-        if ($cexecute) {
-            if($this->AutoToObject){
+        if($cexecute){
+            if($this->ToObject){
                 return json_decode($cexecute);
             }else{
                 return $cexecute;
             }
-        } else {
+        }else{
             return false;
         }
     }
