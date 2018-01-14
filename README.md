@@ -11,7 +11,7 @@ https://payjs.cn/
 ```$xslt
 $ composer require musnow/payjs
 ```
-或者在你的项目跟目录编辑```composer.json```
+或者在你的项目跟目录编辑 ```composer.json```
 ```$xslt
 "require": {
     "musnow/payjs": "^1.0.2"
@@ -24,6 +24,7 @@ $ composer update
 
 
 ```$xslt
+<?php
 require 'vendor/autoload.php';
 
 use \Payjs\Payjs;
@@ -45,17 +46,19 @@ $OrderID = 'wixin_order' . time();
 $Amoun = 100;
 //商品说明
 $Products = '测试订单';
+//用户自定义数据，在notify的时候会原样返回
+$Attach = null
 //前端跳转地址
 $JumpURL = '';
 //jspay的订单id
 $PayjsOrderID = '2017122519xxxxxxx26265498';
 
 //扫码支付
-$retData = $payjs->QRPay($OrderID,$Amount,$Products);
+$retData = $payjs->QRPay($OrderID,$Amount,$Products,$Attach);
 print_r($retData);
 
 //收银台模式
-$retData = $payjs->Cashier($OrderID,$Amount,$Products,$JumpURL);
+$retData = $payjs->Cashier($OrderID,$Amount,$Products,$JumpURL,$Attach);
 print_r($retData);
 
 //jspay
@@ -69,13 +72,14 @@ print_r($retData);
 
 传入参数说明
 
-| 变量名 | 类型 | 说明 |
-| :------ |:------| :-----------|
-| $OrderID | string | 订单id；如果不填写使用时间戳+随机六位数字 |
-| $Amoun | int | 订单金额；单位（分）如果不填写默认为￥0.01 |
-| $Products | string | 商品说明；如果不填写默认为“订单” |
-| $JumpURL  | string | 前端跳转地址；收银台模式和jsapi模式需要，根据文档内容显示目前未开启 |
-| $PayjsOrderID | string | jspay的订单id |
+| 变量名 | 类型 | 必填 | 说明 |
+| :----- |:------| :-- | :-----------|
+| $OrderID | string(32) | Y | 订单id；不填写默认使用时间戳+随机六位数字(仅限测试) |
+| $Amoun | int(16) | Y | 订单金额；单位（分）如果不填写默认为￥0.01 |
+| $Products | string(32) | N | 商品说明；如果不填写默认为“订单” |
+| $JumpURL  | 	string(32) | N | 前端跳转地址；收银台模式和jsapi模式需要，根据文档内容显示目前未开启 |
+| $PayjsOrderID | string(32) | Y | jspay的订单id |
+| $Attach | string(127) | N | 用户自定义数据，在notify的时候会原样返回 |
 
 水平有限，如果你发现哪里有错误请提交issues，感激不尽。
 

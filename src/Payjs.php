@@ -41,7 +41,7 @@ class Payjs
     /*
      * 扫码支付
      */
-    public function QRPay($OrderID = null,$Amount = 1,$Products = '订单'){
+    public function QRPay($OrderID = null,$Amount = 1,$Products = '订单',$Attach =null){
         if (is_null($OrderID)){
             $OrderID = self::SetOrderID();
         }
@@ -50,6 +50,7 @@ class Payjs
         return $this->Submit($RetURL,[
             'total_fee' => $Amount,
             'body' => $Products,
+            'attach' => $Attach,
             'out_trade_no' => $OrderID
         ]);
     }
@@ -57,7 +58,7 @@ class Payjs
     /*
      * 收银台模式
      */
-    public function Cashier($OrderID = null,$Amount = 1,$Products = '订单',$JumpURL = ''){
+    public function Cashier($OrderID = null,$Amount = 1,$Products = '订单',$JumpURL = '',$Attach = null){
         if (is_null($OrderID)){
             $OrderID = self::SetOrderID();
         }
@@ -66,6 +67,7 @@ class Payjs
         return $this->Submit($RetURL,[
             'total_fee' => $Amount,
             'body' => $Products,
+            'attach' => $Attach,
             'out_trade_no' => $OrderID,
             'callback_url' => $JumpURL
         ]);
@@ -128,6 +130,9 @@ class Payjs
                 $Arrry['mchid'] = $this->MerchantID;
                 if (!empty($this->NotifyURL)){
                     $Arrry['notify_url'] = $this->NotifyURL;
+                }
+                if (is_null($Arrry['attach'])){
+                    unset($Arrry['attach']);
                 }
             }
             $Arrry['sign'] = $this->Sign($Arrry);
