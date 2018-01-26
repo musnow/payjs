@@ -43,7 +43,7 @@ $payjs = new Payjs([
 //订单id
 $OrderID = 'wixin_order' . time();
 //订单金额
-$Amoun = 100;
+$Amount = 100;
 //商品说明
 $Products = '测试订单';
 //用户自定义数据，在notify的时候会原样返回
@@ -61,10 +61,6 @@ print_r($retData);
 $retData = $payjs->Cashier($OrderID,$Amount,$Products,$JumpURL,$Attach);
 print_r($retData);
 
-//jspay
-$retData = $payjs->JSPay($OrderID,$Amount,$Products,$JumpURL);
-print_r($retData);
-
 //查询订单
 $retData = $payjs->Query($PayjsOrderID);
 print_r($retData);
@@ -75,7 +71,7 @@ print_r($retData);
 | 变量名 | 类型 | 必填 | 说明 |
 | :----- |:------| :-- | :-----------|
 | $OrderID | string(32) | Y | 订单id；不填写默认使用时间戳+随机六位数字(仅限测试) |
-| $Amoun | int(16) | Y | 订单金额；单位（分）如果不填写默认为￥0.01 |
+| $Amount | int(16) | Y | 订单金额；单位（分）如果不填写默认为￥0.01 |
 | $Products | string(32) | N | 商品说明；如果不填写默认为“订单” |
 | $JumpURL  | 	string(32) | N | 前端跳转地址；收银台模式和jsapi模式需要，根据文档内容显示目前未开启 |
 | $PayjsOrderID | string(32) | Y | jspay的订单id |

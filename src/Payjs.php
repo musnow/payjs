@@ -74,24 +74,6 @@ class Payjs
     }
 
     /*
-     * JSpay
-     * 注：无测试条件
-     */
-    public function JSPay($OrderID = null,$Amount = 1,$Products = '订单',$JumpURL = ''){
-        if (is_null($OrderID)){
-            $OrderID = self::SetOrderID();
-        }
-        $RetURL = 'https://payjs.cn/api/jspay';
-
-        return $this->Submit($RetURL,[
-            'total_fee' => $Amount,
-            'body' => $Products,
-            'out_trade_no' => $OrderID,
-            'callback_url' => $JumpURL
-        ]);
-    }
-
-    /*
      * 订单查询
      */
     public function Query($OrderID = null){
@@ -137,13 +119,13 @@ class Payjs
             }
             $Arrry['sign'] = $this->Sign($Arrry);
         }
-        return $this->Curl($Url,$Arrry);
+        return self::Curl($Url,$Arrry,$this->ToObject);
     }
 
     /*
      * curl
     */
-    protected function Curl($Url,$Arrry){
+    protected static function Curl($Url,$Arrry,$Coded){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $Url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -155,7 +137,7 @@ class Payjs
         curl_close($ch);
 
         if($cexecute){
-            if($this->ToObject){
+            if($Coded){
                 return json_decode($cexecute);
             }else{
                 return $cexecute;
