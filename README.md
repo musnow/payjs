@@ -64,6 +64,11 @@ print_r($retData);
 //查询订单
 $retData = $payjs->Query($PayjsOrderID);
 print_r($retData);
+
+//检查验证notify数据是否被篡改、伪造
+//http://php.net/manual/en/reserved.variables.request.php
+$retData = $payjs->Checking($_REQUEST);
+print_r($retData);
 ```
 
 传入参数说明
@@ -76,9 +81,10 @@ print_r($retData);
 | $JumpURL  | 	string(32) | N | 前端跳转地址；收银台模式和jsapi模式需要，根据文档内容显示目前未开启 |
 | $PayjsOrderID | string(32) | Y | jspay的订单id |
 | $Attach | string(127) | N | 用户自定义数据，在notify的时候会原样返回 |
+| $_REQUEST | array() | Y | http://php.net/manual/en/reserved.variables.request.php |
 
 水平有限，如果你发现哪里有错误请提交issues，感激不尽。
-
+Y
 
 #License  
 payjs is under the MIT license.
