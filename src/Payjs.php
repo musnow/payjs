@@ -40,6 +40,7 @@ class Payjs
 
     /*
      * 扫码支付
+     * @return json
      */
     public function QRPay($OrderID = null,$Amount = 1,$Products = '订单',$Attach =null){
         if (is_null($OrderID)){
@@ -57,6 +58,7 @@ class Payjs
 
     /*
      * 收银台模式
+     * @return mixed
      */
     public function Cashier($OrderID = null,$Amount = 1,$Products = '订单',$JumpURL = '',$Attach = null){
         if (is_null($OrderID)){
@@ -75,6 +77,7 @@ class Payjs
 
     /*
      * 订单查询
+     * @return mixed
      */
     public function Query($OrderID = null){
         if (is_null($OrderID)){
@@ -88,15 +91,37 @@ class Payjs
     }
 
     /*
-     * 生成随机数字
+     * 验证notify数据
+     * @return Boolean
      */
-    protected static function SetOrderID($Length = 6){
-        $Rand =  rand(pow(10,($Length - 1)), pow(10,$Length) -1);
-        return time() . $Rand;
+    public function Checking(array $Data){
+        $beSign = $Data['sign'];
+        unset($Data['sign']);
+        if ($this->Sign($Data) == $beSign){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /*
-     * 签名
+     * 生成随机数字
+     * @return int
+     */
+    public static function Random($Length = 6){
+        return rand(pow(10,($Length - 1)), pow(10,$Length) -1);
+    }
+    /*
+     * 生成时间戳+随机数字组合
+     * @return int
+     */
+    protected static function SetOrderID(){
+        return time() . self::Random();
+    }
+
+    /*
+     * 数据签名
+     * @return string
      */
     protected function Sign(array $Data) {
         ksort($Data);
@@ -105,6 +130,7 @@ class Payjs
 
     /*
      * 预处理数据
+     * @return mixed
      */
     protected function Submit($Url,$Arrry){
         if($this->AutoSign){
@@ -124,6 +150,7 @@ class Payjs
 
     /*
      * curl
+     * @return mixed
     */
     protected static function Curl($Url,$Arrry,$Coded){
         $ch = curl_init();
