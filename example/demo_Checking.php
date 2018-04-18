@@ -22,4 +22,4 @@ $payjs = new \Musnow\Payjs\Pay($config);
 
 
 $ret = $payjs->Close($_REQUEST); //数据验签
-print_r($payjs);                 //返回数据
+print_r($ret);                 //返回数据

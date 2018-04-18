@@ -43,11 +43,11 @@ $data = [
 ];
 
 $ret = $payjs->qrPay($data);  //扫码支付
-print_r($payjs);              //返回数据
+print_r($ret);              //返回数据
 
 ```
 
-新版本改动比较大建议阅读example内demo进行编码。
+为方便参数扩展新版本改动比较大，不再兼容v1.0x版本，建议阅读example内demo进行编码使用。
 
 水平有限，如果你发现哪里有错误请提交issues，感激不尽。
 

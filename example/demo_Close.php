@@ -24,4 +24,4 @@ $data = [
 ];
 
 $ret = $payjs->Close($data);    //关闭订单
-print_r($payjs);                //返回数据
+print_r($ret);                //返回数据

@@ -27,4 +27,4 @@ $data = [
 ];
 
 $ret = $payjs->qrPay($data);  //扫码支付
-print_r($payjs);              //返回数据
+print_r($ret);              //返回数据

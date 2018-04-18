@@ -29,4 +29,4 @@ $data = [
 ];
 
 $ret = $payjs->Cashier($data);  //收银台模式
-print_r($payjs);                //返回数据
+print_r($ret);                //返回数据
