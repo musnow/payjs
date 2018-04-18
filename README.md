@@ -14,7 +14,7 @@ $ composer require musnow/payjs
 或者在你的项目跟目录编辑 ```composer.json```
 ```$xslt
 "require": {
-    "musnow/payjs": "^2.0.0"
+    "musnow/payjs": "^2.0.1"
 }
 ```
 更新
@@ -30,7 +30,8 @@ require '../vendor/autoload.php';
 $config = [
     'MerchantID' => '',                      //商户号
     'MerchantKey' => '',                     //密钥
-    'NotifyURL' => 'https://www.baidu.com/', //notify地址 接收微信支付异步通知的回调地址。必须为可直接访问的URL，不能带参数、session验证、csrf验证。留空则不通知 需要保留最后的斜杠
+    'NotifyURL' => 'https://www.baidu.com/', 
+    //notify地址 接收微信支付异步通知的回调地址。必须为可直接访问的URL，不能带参数、session验证、csrf验证。留空则不通知 需要保留最后的斜杠
 ];
 
 $payjs = new \Musnow\Payjs\Pay($config);
