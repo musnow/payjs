@@ -1,31 +1,15 @@
-# payjs
-本项目是为payjs.cn适配的，可以为你的项目接入微信支付功能。
-
-PAYJS 旨在解决需要使用交易数据流的个人、创业者、个体户等小微支付需求，帮助开发者使想法快速转变为原型   
-
-https://payjs.cn/
-
-
-如果你想使用本项目请使用 composer 安装
-
-```$xslt
-$ composer require musnow/payjs
-```
-或者在你的项目跟目录编辑 ```composer.json```
-```$xslt
-"require": {
-    "musnow/payjs": "^2.0.0"
-}
-```
-更新
-```$xslt
-$ composer update
-```
-
-
-```$xslt
 <?php
+/**
+ * Created by PhpStorm.
+ * User: lixia
+ * Date: 2018/4/18
+ * Time: 19:24
+ */
 require '../vendor/autoload.php';
+
+/*
+官方文档：https://payjs.cn/help/api-lie-biao/sao-ma-zhi-fu.html
+*/
 
 $config = [
     'MerchantID' => '',                      //商户号
@@ -44,13 +28,3 @@ $data = [
 
 $ret = $payjs->qrPay($data);  //扫码支付
 print_r($payjs);              //返回数据
-
-```
-
-新版本改动比较大建议阅读example内demo进行编码。
-
-水平有限，如果你发现哪里有错误请提交issues，感激不尽。
-
-
-#License  
-payjs is under the MIT license.
