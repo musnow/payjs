@@ -23,10 +23,10 @@ $payjs = new \Musnow\Payjs\Pay($config);
 $data = [
     'TotalFee' => 1,          //金额，单位 分
     'Body' => '测试订单',       //订单标题
-    'Attach' => '测试订单s',    //用户自定义数据，在notify时会原样返回
+    'Attach' => '测试订单',    //用户自定义数据，在notify时会原样返回
     'outTradeNo' => time(),   //商户订单号，需要保证唯一
-    'callbackUrl' => '',      //用户支付成功后，前端跳转地址 目前尚未启用
+    'callbackUrl' => '',      //用户支付成功后，前端跳转地址。留空则支付后关闭webview
 ];
 
 $ret = $payjs->Cashier($data);  //收银台模式
-print_r($ret);                //返回数据
+print_r($ret);                  //返回数据

@@ -15,5 +15,11 @@
         "psr-4": {
             "Musnow\\Payjs\\": "src/"
         }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }

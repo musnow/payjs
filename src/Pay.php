@@ -38,8 +38,9 @@ class Pay
      * 扫码支付
      * @return json
      */
-    public function qrPay($data = array()){
-        return $this->merge('native',[
+    public function qrPay($data = [])
+    {
+        return $this->merge('native', [
             'total_fee' => $data['TotalFee'],
             'body' => $data['Body'],
             'attach' => @$data['Attach'],
@@ -48,11 +49,12 @@ class Pay
     }
 
     /*
-     * 收银台模式
+     * 收银台支付
      * @return mixed
      */
-    public function Cashier($data = array()){
-        return $this->merge('cashier',[
+    public function Cashier($data = [])
+    {
+        return $this->merge('cashier', [
             'total_fee' => $data['TotalFee'],
             'body' => $data['Body'],
             'attach' => @$data['Attach'],
@@ -65,9 +67,31 @@ class Pay
      * 订单查询
      * @return mixed
      */
-    public function Query($data =array()){
-        return $this->merge('check',[
+    public function Query($data = [])
+    {
+        return $this->merge('check', [
             'payjs_order_id' => $data['PayjsOrderId']
+        ]);
+    }
+
+    /*
+     * 关闭订单
+     * @return json
+     */
+    public function Close($data = [])
+    {
+        return $this->merge('close', [
+            'payjs_order_id' => $data['PayjsOrderId']
+        ]);
+    }
+
+    /*
+     * 获取用户资料
+     * @return json
+     */
+    public function User($data = []){
+        return $this->merge('user', [
+            'openid' => $data['openid']
         ]);
     }
 
@@ -75,60 +99,54 @@ class Pay
      * 验证notify数据
      * @return Boolean
      */
-    public function Checking($data = array()){
+    public function Checking($data = array())
+    {
         $beSign = $data['sign'];
         unset($data['sign']);
-        if ($this->Sign($data) == $beSign){
+        if ($this->Sign($data) == $beSign) {
             return true;
-        }else{
+        } else {
             return false;
         }
-    }
-
-    /*
-     * 关闭订单
-     * @return json
-     */
-    public function Close($data = array()){
-        return $this->merge('close',[
-            'payjs_order_id' => $data['PayjsOrderId']
-        ]);
     }
 
     /*
      * 数据签名
      * @return string
      */
-    protected function Sign(array $data) {
+    protected function Sign(array $data)
+    {
         ksort($data);
-        return strtoupper(md5(urldecode(http_build_query($data)).'&key='.$this->MerchantKey));
+        return strtoupper(md5(urldecode(http_build_query($data)) . '&key=' . $this->MerchantKey));
     }
 
     /*
      * 预处理数据
      * @return mixed
      */
-    protected function merge($method,$data){
-        if($this->AutoSign){
-            if(!array_key_exists('payjs_order_id',$data)){
+    protected function merge($method, $data)
+    {
+        if ($this->AutoSign) {
+            if (!array_key_exists('payjs_order_id', $data)) {
                 $data['mchid'] = $this->MerchantID;
-                if (!empty($this->NotifyURL)){
+                if (!empty($this->NotifyURL)) {
                     $data['notify_url'] = $this->NotifyURL;
                 }
-                if (is_null($data['attach'])){
+                if (is_null(@$data['attach'])) {
                     unset($data['attach']);
                 }
             }
             $data['sign'] = $this->Sign($data);
         }
-        return $this->Curl($method,$data);
+        return $this->Curl($method, $data);
     }
 
     /*
      * curl
      * @return mixed
     */
-    protected function Curl($method, $data, $options = array()){
+    protected function Curl($method, $data, $options = array())
+    {
         $url = $this->requestUrl . $method;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -138,7 +156,7 @@ class Pay
         if (!empty($options)) {
             curl_setopt_array($ch, $options);
         }
-        if (!$this->ssl){
+        if (!$this->ssl) {
             //https请求 不验证证书和host
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -146,13 +164,13 @@ class Pay
         $cexecute = curl_exec($ch);
         curl_close($ch);
 
-        if($cexecute){
-            if($this->ToObject){
+        if ($cexecute) {
+            if ($this->ToObject) {
                 return json_decode($cexecute);
-            }else{
+            } else {
                 return $cexecute;
             }
-        }else{
+        } else {
             return false;
         }
     }

@@ -8,7 +8,7 @@
 require '../vendor/autoload.php';
 
 /*
-官方文档：https://payjs.cn/help/api-lie-biao/ding-dan-cha-xun.html
+官方文档：https://payjs.cn/help/api-lie-biao/yong-hu-zi-liao.html
 */
 
 $config = [
@@ -20,8 +20,8 @@ $config = [
 $payjs = new \Musnow\Payjs\Pay($config);
 
 $data = [
-    'PayjsOrderId' => 20180418191722003805784411,   //payjs的订单号
+    'openid' => 'o7LFAwe0HazW1M_KzdMzc-lTTv2w',   //用户 openid
 ];
 
-$ret = $payjs->Query($data);    //查询订单
-print_r($ret);                  //返回数据
+$ret = $payjs->User($data);    //查询
+print_r($ret);                 //返回数据

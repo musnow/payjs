@@ -14,7 +14,7 @@ $ composer require musnow/payjs
 或者在你的项目跟目录编辑 ```composer.json```
 ```$xslt
 "require": {
-    "musnow/payjs": "^2.0.1"
+    "musnow/payjs": "^2.0.2"
 }
 ```
 更新
@@ -39,12 +39,12 @@ $payjs = new \Musnow\Payjs\Pay($config);
 $data = [
     'TotalFee' => 1,          //金额，单位 分
     'Body' => '测试订单',       //订单标题
-    'Attach' => '测试订单s',    //用户自定义数据，在notify时会原样返回
+    'Attach' => '测试订单',    //用户自定义数据，在notify时会原样返回
     'outTradeNo' => time(),   //商户订单号，需要保证唯一
 ];
 
 $ret = $payjs->qrPay($data);  //扫码支付
-print_r($ret);              //返回数据
+print_r($ret);                //返回数据
 
 ```
 
