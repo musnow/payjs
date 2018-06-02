@@ -96,6 +96,13 @@ class Pay
     }
 
     /*
+     * 获取商户资料
+     * @return json
+     */
+    public function Info(){
+        return $this->merge('info');
+    }
+    /*
      * 验证notify数据
      * @return Boolean
      */
@@ -124,7 +131,7 @@ class Pay
      * 预处理数据
      * @return mixed
      */
-    protected function merge($method, $data)
+    protected function merge($method, $data = [])
     {
         if ($this->AutoSign) {
             if (!array_key_exists('payjs_order_id', $data)) {
